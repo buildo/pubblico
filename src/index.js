@@ -1,11 +1,10 @@
 const { get, post } = require('./http');
 const { readFileSync } = require('fs');
 const lg = require('./lg');
+const { mediumApiToken, publication } = JSON.parse(readFileSync('../config.json', 'utf8') || '{}');
 
-const TOKEN = readFileSync('~/.TOKEN');
+console.log({ mediumApiToken, publication });
 
-
-const { mediumApiToken, publication } = require('../config.json');
 const {
   src: srcPath = '../README.md',
   tags = 'test, pubblico',
@@ -66,6 +65,9 @@ const pubblico = async ({
   tags: _tags,
   src
 }) => {
+  if (!token) {
+    lg('ERROR! You must set a Medium API token by running `pubblico-setup --set-token [YOUR_MEDIUM_API_TOKEN]');
+  }
   const tags = _tags.split(',').map(t => t.trim());
   lg('Tags', tags);
   lg('Title', title);

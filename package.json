@@ -11,7 +11,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "pubblico": "./bin"
+    "pubblico": "./bin",
+    "pubblico-setup": "./bin-setup"
   },
   "author": "",
   "license": "ISC",
