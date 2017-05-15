@@ -61,24 +61,20 @@ const publishToPublication = async ({ token, title, tags, src, publicationId }) 
 const pubblico = async ({
   token,
   title,
-  tags,
+  tags: _tags,
   src
 }) => {
   const { name: userName, username: userUsername, id: userId } = await getUser({ token });
   lg('Authenticated user:', userName, `<${userUsername}>`);
+  const tags = _tags.split(',').map(t => t.trim());
+  lg('Tags', tags);
   if ((publicationArg || publication) && !personal) {
     const { url: publicationUrl, name: publicationName, id: publicationId } = await getPublication({ token, userId });
     lg('Publish to a publication', publicationName, publicationUrl);
     const publishedPublicationPost = await publishToPublication({ publicationId, token, title, tags, src });
     lg('published!', publishedPublicationPost.url);
   } else {
-    const publishedPost = await publish({
-      token,
-      title,
-      tags,
-      src,
-      userId
-    });
+    const publishedPost = await publish({ token, title, tags, src, userId });
     lg('published!', publishedPost.url);
   }
 };
@@ -86,6 +82,6 @@ const pubblico = async ({
 pubblico({
   token: mediumApiToken,
   src: srcFile,
-  tags: tags.split(',').map(t => t.trim()),
+  tags,
   title
 });
