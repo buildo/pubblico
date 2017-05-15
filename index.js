@@ -73,10 +73,10 @@ const pubblico = async ({
     const { url: publicationUrl, name: publicationName, id: publicationId } = await getPublication({ token, userId });
     lg('Publish to a publication', publicationName, publicationUrl);
     const publishedPublicationPost = await publishToPublication({ publicationId, token, title, tags, src });
-    lg('published!', publishedPublicationPost.url);
+    lg('Published!', publishedPublicationPost.url);
   } else {
     const publishedPost = await publish({ token, title, tags, src, userId });
-    lg('published!', publishedPost.url);
+    lg('Published!', publishedPost.url);
   }
 };
 
