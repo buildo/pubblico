@@ -4,11 +4,11 @@
   "engines": {
     "node": ">=7.73"
   },
+  "files": ["src", "bin"],
   "description": "Publish a markdown to Medium",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "pubblico": "node ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
     "pubblico": "./bin"

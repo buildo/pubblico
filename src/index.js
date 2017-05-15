@@ -2,10 +2,12 @@ const { get, post } = require('./http');
 const { readFileSync } = require('fs');
 const lg = require('./lg');
 
+const TOKEN = readFileSync('~/.TOKEN');
 
-const { mediumApiToken, publication } = require('./config.json');
+
+const { mediumApiToken, publication } = require('../config.json');
 const {
-  src: srcPath = './README.md',
+  src: srcPath = '../README.md',
   tags = 'test, pubblico',
   title = 'Pubblico',
   publish: postAsUnlisted,
