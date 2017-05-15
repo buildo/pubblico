@@ -10,6 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "pubblico": "node ."
   },
+  "bin": {
+    "pubblico": "./bin"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
