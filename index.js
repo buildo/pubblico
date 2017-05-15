@@ -64,10 +64,11 @@ const pubblico = async ({
   tags: _tags,
   src
 }) => {
-  const { name: userName, username: userUsername, id: userId } = await getUser({ token });
-  lg('Authenticated user:', userName, `<${userUsername}>`);
   const tags = _tags.split(',').map(t => t.trim());
   lg('Tags', tags);
+  lg('Title', title);
+  const { name: userName, username: userUsername, id: userId } = await getUser({ token });
+  lg('Authenticated user:', userName, `<${userUsername}>`);
   if ((publicationArg || publication) && !personal) {
     const { url: publicationUrl, name: publicationName, id: publicationId } = await getPublication({ token, userId });
     lg('Publish to a publication', publicationName, publicationUrl);
