@@ -20,5 +20,8 @@
     "request": "^2.81.0",
     "scriptoni": "^0.5.0",
     "yargs": "^8.0.1"
+  },
+  "devDependencies": {
+    "smooth-release": "^8.0.3"
   }
 }
