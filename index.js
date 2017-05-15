@@ -5,7 +5,7 @@ const lg = require('./lg');
 
 const { mediumApiToken, publication } = require('./config.json');
 const {
-  src: srcPath = './README',
+  src: srcPath = './README.md',
   tags = 'test, pubblico',
   title = 'Pubblico',
   publish: postAsUnlisted,
