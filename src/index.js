@@ -3,8 +3,6 @@ const { readFileSync } = require('fs');
 const lg = require('./lg');
 const { mediumApiToken, publication } = JSON.parse(readFileSync('../config.json', 'utf8') || '{}');
 
-console.log({ mediumApiToken, publication });
-
 const {
   src: srcPath = '../README.md',
   tags = 'test, pubblico',
