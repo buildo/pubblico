@@ -1,17 +1,28 @@
 const lg = require('./lg');
+const readFileIfExistsSync = require('./readFileIfExistsSync');
 const {  writeFileSync } = require('fs');
-const config = require('../config.json');
+const {
+  isEmpty,
+  map,
+  pickBy: clear // clear falsy from objects
+} = require('lodash');
+const configPath = require('./configPath');
+
+const config = JSON.parse(readFileIfExistsSync(configPath) || '{}');
 const {
   setToken = config.mediumApiToken,
   publication = config.publication
 } = require('yargs').argv;
 
-const newConfig = Object.assign({}, config, {
+const newConfig = clear(Object.assign({}, config, {
   mediumApiToken: setToken,
   publication
-});
+}));
 
-writeFileSync('../config.json', JSON.stringify(newConfig));
+writeFileSync(configPath, JSON.stringify(newConfig));
 
-lg('Config updated', JSON.stringify(newConfig, null, 2));
+lg(isEmpty(newConfig) ?
+  'Your config is empty, set the mediumApiToken passing param --setToken' :
+  `Config updated, ${map(newConfig, (value, key) => `\n${key}: ${value}`)}`
+);
 
