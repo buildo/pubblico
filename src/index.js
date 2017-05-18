@@ -1,19 +1,18 @@
 const { get, post } = require('./http');
-const { readFileSync } = require('fs');
+const readFileIfExistsSync = require('./readFileIfExistsSync');
 const lg = require('./lg');
+const configPath = require('./configPath');
+const path = require('path');
+const { mediumApiToken, publication } = JSON.parse(readFileIfExistsSync(configPath) || '{}');
 
-
-const { mediumApiToken, publication } = require('./config.json');
 const {
-  src: srcPath = './README',
+  src,
   tags = 'test, pubblico',
   title = 'Pubblico',
   publish: postAsUnlisted,
   personal,
   publication: publicationArg
 } = require('yargs').argv;
-
-const srcFile = readFileSync(srcPath, 'utf8');
 
 const getUser = async ({ token }) => {
   return await get('https://api.medium.com/v1/me', {
@@ -32,26 +31,26 @@ const getPublication = async ({ token, userId }) => {
   return publications.find(p => p.url.split('/').includes(publicationArg || publication));
 };
 
-const publish = async ({ token, title, tags, src, userId }) => {
+const publish = async ({ token, title, tags, srcFile, userId }) => {
   return await post(`https://api.medium.com/v1/users/${userId}/posts`, {
     token,
     data: {
       title,
       contentFormat: 'markdown',
-      content: src,
+      content: srcFile,
       tags,
       publishStatus: postAsUnlisted ? 'unlisted' : 'draft'
     }
   });
 };
 
-const publishToPublication = async ({ token, title, tags, src, publicationId }) => {
+const publishToPublication = async ({ token, title, tags, srcFile, publicationId }) => {
   return await post(`https://api.medium.com/v1/publications/${publicationId}/posts`, {
     token,
     data: {
       title,
       contentFormat: 'markdown',
-      content: src,
+      content: srcFile,
       tags,
       publishStatus: postAsUnlisted ? 'unlisted' : 'draft'
     }
@@ -61,31 +60,37 @@ const publishToPublication = async ({ token, title, tags, src, publicationId }) 
 const pubblico = async ({
   token,
   title,
-  tags,
+  tags: _tags,
   src
 }) => {
+  const srcFile = readFileIfExistsSync(path.resolve(process.env.PWD, src));
+  if (!token) {
+    lg('ERROR! You must set a Medium API token by running `pubblico-setup --set-token [YOUR_MEDIUM_API_TOKEN]. Get one here https://medium.com/me/settings');
+    return;
+  }
+  if (!srcFile) {
+    lg('ERROR! You must pass a valid src path parameter');
+    return;
+  }
+  const tags = _tags.split(',').map(t => t.trim());
+  lg('Tags', tags);
+  lg('Title', title);
   const { name: userName, username: userUsername, id: userId } = await getUser({ token });
   lg('Authenticated user:', userName, `<${userUsername}>`);
   if ((publicationArg || publication) && !personal) {
     const { url: publicationUrl, name: publicationName, id: publicationId } = await getPublication({ token, userId });
     lg('Publish to a publication', publicationName, publicationUrl);
-    const publishedPublicationPost = await publishToPublication({ publicationId, token, title, tags, src });
-    lg('published!', publishedPublicationPost.url);
+    const publishedPublicationPost = await publishToPublication({ publicationId, token, title, tags, srcFile });
+    lg('Published!', publishedPublicationPost.url);
   } else {
-    const publishedPost = await publish({
-      token,
-      title,
-      tags,
-      src,
-      userId
-    });
-    lg('published!', publishedPost.url);
+    const publishedPost = await publish({ token, title, tags, srcFile, userId });
+    lg('Published!', publishedPost.url);
   }
 };
 
 pubblico({
   token: mediumApiToken,
-  src: srcFile,
-  tags: tags.split(',').map(t => t.trim()),
+  src,
+  tags,
   title
 });
