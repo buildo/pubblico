@@ -6,7 +6,8 @@
   },
   "files": [
     "src",
-    "bin"
+    "bin",
+    "bin-setup"
   ],
   "description": "Publish a markdown to Medium",
   "main": "src/index.js",
