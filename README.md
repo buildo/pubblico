@@ -24,7 +24,7 @@ and edit the fields `mediumApiToken` ([get it here](https://medium.com/me/settin
 ## usage
 
 ```sh
-yarn run pubblico
+pubblico --src [PATH_TO_MARKDOWN_FILE]
 ```
 
 ### options
