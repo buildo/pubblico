@@ -1,1 +1,1 @@
-module.exports = `${process.env.PWD}/config.json`;
+module.exports = `${process.env.PWD}/pubblico-config.json`;
