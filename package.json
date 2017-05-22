@@ -16,8 +16,7 @@
     "release-version": "smooth-release"
   },
   "bin": {
-    "pubblico": "./bin",
-    "pubblico-setup": "./bin-setup"
+    "pubblico": "./bin"
   },
   "author": "",
   "license": "ISC",

@@ -3,16 +3,19 @@ const readFileIfExistsSync = require('./readFileIfExistsSync');
 const lg = require('./lg');
 const configPath = require('./configPath');
 const path = require('path');
-const { mediumApiToken, publication } = JSON.parse(readFileIfExistsSync(configPath) || '{}');
+const config = JSON.parse(readFileIfExistsSync(configPath) || '{}');
+const params = require('yargs').argv;
 
 const {
+  mediumApiToken,
   src,
   tags = 'test, pubblico',
   title = 'Pubblico',
   publish: postAsUnlisted,
   personal,
-  publication: publicationArg
-} = require('yargs').argv;
+  publication,
+  mediumApiToken: mediumApiTokenArg
+} = { ...config, params };
 
 const getUser = async ({ token }) => {
   return await get('https://api.medium.com/v1/me', {
@@ -28,7 +31,7 @@ const getUserPublications = async ({ token, userId }) => {
 
 const getPublication = async ({ token, userId }) => {
   const publications = await getUserPublications({ token, userId });
-  return publications.find(p => p.url.split('/').includes(publicationArg || publication));
+  return publications.find(p => p.url.split('/').includes(publication));
 };
 
 const publish = async ({ token, title, tags, srcFile, userId }) => {
@@ -65,7 +68,7 @@ const pubblico = async ({
 }) => {
   const srcFile = readFileIfExistsSync(path.resolve(process.env.PWD, src));
   if (!token) {
-    lg('ERROR! You must set a Medium API token by running `pubblico-setup --set-token [YOUR_MEDIUM_API_TOKEN]. Get one here https://medium.com/me/settings');
+    lg('ERROR! You must set a Medium API token by passing it to pubblico or storing it in a .pubblicorc JSON file. Get one here https://medium.com/me/settings');
     return;
   }
   if (!srcFile) {
@@ -77,7 +80,7 @@ const pubblico = async ({
   lg('Title', title);
   const { name: userName, username: userUsername, id: userId } = await getUser({ token });
   lg('Authenticated user:', userName, `<${userUsername}>`);
-  if ((publicationArg || publication) && !personal) {
+  if (publication && !personal) {
     const { url: publicationUrl, name: publicationName, id: publicationId } = await getPublication({ token, userId });
     lg('Publish to a publication', publicationName, publicationUrl);
     const publishedPublicationPost = await publishToPublication({ publicationId, token, title, tags, srcFile });
@@ -89,7 +92,7 @@ const pubblico = async ({
 };
 
 pubblico({
-  token: mediumApiToken,
+  token: mediumApiToken || mediumApiTokenArg,
   src,
   tags,
   title
