@@ -1,1 +1,1 @@
-module.exports = `${process.env.PWD}/.hophoprc`;
+module.exports = `${process.env.PWD}/.pubblicorc`;
