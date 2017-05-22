@@ -12,33 +12,27 @@
 `pubblico` requires `node>=7`
 
 ```sh
-git clone git@github.com:francescogior/pubblico.git && cd pubblico`
+yarn add pubblico
 ```
-
-```sh
-cp config.example.json config.json
-```
-
-and edit the fields `mediumApiToken` ([get it here](https://medium.com/me/settings)) and (optionally) `publication` (use name displayed in the url after medium.com/)
+ and (optionally) `publication` (use name displayed in the url after medium.com/)
 
 ## usage
 
 ```sh
-pubblico --src [PATH_TO_MARKDOWN_FILE]
+pubblico --src [PATH_TO_MARKDOWN_FILE] --medium-api-token [YOUR_TOKEN] --title [TITLE] --tags [TAGS] --publication [PUBLICATION]
 ```
 
 ### options
+
+You can pass options inline or storing them in a `.pubblicorc` json file.
+
 - `src` specify path of the file you want to post. If not specified, this README will be posted
+- `mediumApiToken` [get it here](https://medium.com/me/settings))
 - `publish` The post will be submitted as draft. You can specify `-publish` to post it as unlisted.
 - `title` the title of the post, it defaults to `'Pubblico'`
 - `tags` comma separated tags
-- `personal` if you specify a publication in the config, `pubblico` will try to post in that publication, use `-personal` to override
+- `personal` if you specify a publication in the `.pubblicorc`, `pubblico` will try to post in that publication, use `-personal` to override
 - `publication` if you don't specify a publication in the config, or if you want to override it, use `-publication publication-name`
-
-
-```sh
-yarn run pubblico -- -src ~/path/to/srcFile -title 'My first Medium Post from command line' -tags 'Test, pubblico' -publish
-```
 
 ## disclaimer
 it doesn't basically handle errors at the moment, so just be nice :)

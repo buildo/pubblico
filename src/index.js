@@ -15,7 +15,7 @@ const {
   personal,
   publication,
   mediumApiToken: mediumApiTokenArg
-} = { ...config, params };
+} = Object.assign({}, config, params);
 
 const getUser = async ({ token }) => {
   return await get('https://api.medium.com/v1/me', {
