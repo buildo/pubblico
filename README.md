@@ -11,10 +11,19 @@
 
 `pubblico` requires `node>=7`
 
+you can install it globally
+```sh
+yarn global add pubblico
+//or
+npm i -g pubblico
+```
+
+or in a project
 ```sh
 yarn add pubblico
+//or
+npm i --save-dev pubblico
 ```
- and (optionally) `publication` (use name displayed in the url after medium.com/)
 
 ## usage
 
@@ -24,13 +33,13 @@ pubblico --src [PATH_TO_MARKDOWN_FILE] --medium-api-token [YOUR_TOKEN] --title [
 
 ### options
 
-You can pass options inline or storing them in a `.pubblicorc` json file.
+You can pass options inline or storing them in a `.pubblicorc` json file, located in the folder where you are calling the command
 
-- `src` specify path of the file you want to post. If not specified, this README will be posted
-- `mediumApiToken` [get it here](https://medium.com/me/settings))
+- `src` specify path of the file you want to post. REQUIRED
+- `mediumApiToken` [get it here](https://medium.com/me/settings)). REQUIRED
 - `publish` The post will be submitted as draft. You can specify `-publish` to post it as unlisted.
-- `title` the title of the post, it defaults to `'Pubblico'`
-- `tags` comma separated tags
+- `title` the title of the post, it defaults to `'Pubblico'`. NOT REQUIRED BUT RECOMMENDED
+- `tags` comma separated tags, default to 'test, pubblico'. NOT REQUIRED BUT RECOMMENDED
 - `personal` if you specify a publication in the `.pubblicorc`, `pubblico` will try to post in that publication, use `-personal` to override
 - `publication` if you don't specify a publication in the config, or if you want to override it, use `-publication publication-name`
 
