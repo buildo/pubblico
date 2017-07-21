@@ -5,6 +5,7 @@ const configPath = require('./configPath');
 const path = require('path');
 const config = JSON.parse(readFileIfExistsSync(configPath) || '{}');
 const params = require('yargs').argv;
+const parseAndModify = require('./parseAndModify');
 
 const {
   mediumApiToken,
@@ -66,15 +67,16 @@ const pubblico = async ({
   tags: _tags,
   src
 }) => {
-  const srcFile = readFileIfExistsSync(path.resolve(process.env.PWD, src));
   if (!token) {
     lg('ERROR! You must set a Medium API token by passing it to pubblico or storing it in a .pubblicorc JSON file. Get one here https://medium.com/me/settings');
     return;
   }
-  if (!srcFile) {
+  const _srcFile = readFileIfExistsSync(path.resolve(process.env.PWD, src));
+  if (!_srcFile) {
     lg('ERROR! You must pass a valid src path parameter');
     return;
   }
+  const srcFile = parseAndModify(_srcFile);
   const tags = _tags.split(',').map(t => t.trim());
   lg('Tags', tags);
   lg('Title', title);
