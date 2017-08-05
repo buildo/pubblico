@@ -36,29 +36,23 @@ const getPublication = async ({ token, userId }) => {
 };
 
 const publish = async ({ token, title, tags, srcFile, userId }) => {
-  return await post(`https://api.medium.com/v1/users/${userId}/posts`, {
+  const publishStatus = postAsUnlisted ? 'unlisted' : 'draft';
+  const settings = {
     token,
-    data: {
-      title,
-      contentFormat: 'markdown',
-      content: srcFile,
-      tags,
-      publishStatus: postAsUnlisted ? 'unlisted' : 'draft'
-    }
-  });
+    data: { title, contentFormat: 'markdown', content: srcFile, tags, publishStatus }
+  };
+  const { data: { url } } = await post(`https://api.medium.com/v1/users/${userId}/posts`, settings);
+  return url;
 };
 
 const publishToPublication = async ({ token, title, tags, srcFile, publicationId }) => {
-  return await post(`https://api.medium.com/v1/publications/${publicationId}/posts`, {
+  const publishStatus = postAsUnlisted ? 'unlisted' : 'draft';
+  const settings = {
     token,
-    data: {
-      title,
-      contentFormat: 'markdown',
-      content: srcFile,
-      tags,
-      publishStatus: postAsUnlisted ? 'unlisted' : 'draft'
-    }
-  });
+    data: { title, contentFormat: 'markdown', content: srcFile, tags, publishStatus }
+  };
+  const { data: { url } } = await post(`https://api.medium.com/v1/publications/${publicationId}/posts`, settings);
+  return url;
 };
 
 const pubblico = async ({
@@ -85,11 +79,11 @@ const pubblico = async ({
   if (publication && !personal) {
     const { url: publicationUrl, name: publicationName, id: publicationId } = await getPublication({ token, userId });
     lg('Publish to a publication', publicationName, publicationUrl);
-    const publishedPublicationPost = await publishToPublication({ publicationId, token, title, tags, srcFile });
-    lg('Published!', publishedPublicationPost.url);
+    const publishedPublicationPostUrl = await publishToPublication({ publicationId, token, title, tags, srcFile });
+    lg('Published!', publishedPublicationPostUrl);
   } else {
-    const publishedPost = await publish({ token, title, tags, srcFile, userId });
-    lg('Published!', publishedPost.url);
+    const publishedPostUrl = await publish({ token, title, tags, srcFile, userId });
+    lg('Published!', publishedPostUrl);
   }
 };
 
