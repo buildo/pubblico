@@ -76,7 +76,7 @@ const pubblico = async ({
     lg('ERROR! You must pass a valid src path parameter');
     return;
   }
-  const srcFile = parseAndModify(_srcFile);
+  const srcFile = await parseAndModify(_srcFile);
   const tags = _tags.split(',').map(t => t.trim());
   lg('Tags', tags);
   lg('Title', title);
