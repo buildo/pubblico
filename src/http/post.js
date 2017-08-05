@@ -13,6 +13,6 @@ module.exports = (url, { token, query, data }) => new Promise((resolve, reject) 
       reject({ error });
     }
     // console.log('post RESPONSE', { body });
-    resolve(body.data);
+    resolve(body);
   });
 });
