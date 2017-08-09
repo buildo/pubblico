@@ -1,6 +1,9 @@
-const compose = require('lodash/flowRight');
 const parseMentions = require('./parseMentions');
+const gistify = require('./gistify');
 
-module.exports = compose([
+const asyncCompose = (...fns) => (x) => fns.reduce((a, b) => a.then(b), Promise.resolve(x));
+
+module.exports = asyncCompose(
+  gistify,
   parseMentions
-]);
+);
