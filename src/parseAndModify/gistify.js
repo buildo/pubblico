@@ -8,7 +8,7 @@ const createGist = async ({ codeString, _ext }) => {
   const ext = _ext ? `.${_ext}` : '';
   try {
     const { id } = await post('https://api.github.com/gists', {
-      data: { files: { [`buildo${ext}`]: { content: codeString } } }
+      data: { files: { [`snippet${ext}`]: { content: codeString } } }
     });
     return id;
   } catch (err) {
