@@ -31,6 +31,11 @@ npm i --save-dev pubblico
 pubblico --src [PATH_TO_MARKDOWN_FILE] --medium-api-token [YOUR_TOKEN] --title [TITLE] --tags [TAGS] --publication [PUBLICATION]
 ```
 
+* `TAGS` shall be comma-separated and can be maximum five 
+* If omitted, parameters are read throuhg a `.pubblicorc` json file, where it is especially convenient to store the Medium token and the publication name.
+
+To get a token [click here](https://medium.com/me/settings).
+
 ### options
 
 You can pass options inline or storing them in a `.pubblicorc` json file, located in the folder where you are calling the command
